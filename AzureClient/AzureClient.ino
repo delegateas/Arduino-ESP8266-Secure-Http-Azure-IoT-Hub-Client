@@ -129,18 +129,19 @@
 #include "IoTHub.h"
 //#include "EventHub.h"  // uncomment if you plan to publish to Azure Event Bus
 #include "Sensor.h"
-#include "Bme280.h"
-#include "bmp280.h"
-#include "bmp180.h"
+//#include "Bme280.h"
+//#include "bmp280.h"
+//#include "bmp180.h"
 #include "DhtSensor.h"
 #include "DigitalPin.h"
+#include "Dht12Sensor.h"
 #include "Ldr.h"
-#include "OLED.h"
+//#include "OLED.h"
 
-const char* connectionString = "HostName=IoTCampAU.azure-devices.net;DeviceId=syd-solar;SharedAccessKey=vbCneLEizMZ2x4PBDehd8BsvhHoUEqLU2mcZ2oQxXr8=";
-const char* wifi_ssid = "NCW";
-const char* wifi_pwd = "malolos5459";
-const char* deviceLocation = "syd-solor";
+const char* connectionString = "HostName=DGFSIoTaf4264253bb94e01a92d27d9125a3559.azure-devices.net;DeviceId=mamlo;SharedAccessKey=<INSERTKEY>";
+const char* wifi_ssid = "ComHem<34C3AB>";
+const char* wifi_pwd = "<INSERTPASS>"; 
+const char* deviceLocation = "malmo";
 
 /* 
  http://hassansin.github.io/certificate-pinning-in-nodejs
@@ -148,8 +149,9 @@ const char* deviceLocation = "syd-solor";
  From Ubuntu subsystem on Windows 10
  echo -n | openssl s_client -connect IoTCampAU.azure-devices.net:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > cert.pem
  openssl x509 -noout -in cert.pem -fingerprint
+ echo -n | opensslmd s_client -connect DGFSIoTaf4264253bb94e01a92d27d9125a3559.azure-devices.net:443 > dg.pem
 */
-const char* certificateFingerprint = "38:5C:47:B1:97:DA:34:57:BB:DD:E7:7C:B9:11:8F:8D:1D:92:EB:F1";
+const char* certificateFingerprint = "9C:AC:A9:4C:32:F9:53:0A:85:CA:AA:4D:CE:A2:D9:A2:83:9A:B8:AB";
 
 Device device(wifi_ssid, wifi_pwd);
 IoT hub;
@@ -161,7 +163,7 @@ DigitalPin powerPin(D5);
 // uncomment required sensor
 
 //Sensor sensor;  // Fake sample environmental data
-Bmp180 sensor;
+//Bmp180 sensor;
 //Bmp180 sensor(&powerPin);
 
 //Bmp280 sensor;
@@ -172,9 +174,10 @@ Bmp180 sensor;
 
 //DhtSensor sensor(device, dht11);
 //DhtSensor sensor(device, dht22);
+Dht12Sensor sensor(device);
 Ldr ldr;
 
-OLED display(&sensor);
+//OLED display(&sensor);
 
 
 IPAddress timeServer(62, 237, 86, 238); // Update these with values suitable for your network.
@@ -207,7 +210,7 @@ void loop() {
 //  sensor.light = ldr.measure();
 //  powerPin.off();
 
-  display.updateDisplay();
+  //display.updateDisplay();
 
   device.connectWifi();
   

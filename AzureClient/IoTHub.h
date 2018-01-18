@@ -6,7 +6,7 @@
 #include "Base64.h"
 #include <WiFiClientSecure.h>
 #include <ESP8266WiFi.h>
-#include <TimeLib.h>           // http://playground.arduino.cc/code/time - installed via library manager
+#include <TimeLib.h>           // http://playground.arduino.cc/code/time - installed via library manager (Time by Michael Margolis)
 
 
 class IoT
