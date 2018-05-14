@@ -132,15 +132,16 @@
 //#include "Bme280.h"
 //#include "bmp280.h"
 //#include "bmp180.h"
-#include "DhtSensor.h"
-#include "DigitalPin.h"
-#include "Dht12Sensor.h"
+//#include "DhtSensor.h"
+//#include "DigitalPin.h"
+//#include "Dht12Sensor.h"
+#include "SR04Sensor.h"
 #include "Ldr.h"
 //#include "OLED.h"
 
-const char* connectionString = "HostName=DGFSIoTaf4264253bb94e01a92d27d9125a3559.azure-devices.net;DeviceId=mamlo;SharedAccessKey=<INSERTKEY>";
+const char* connectionString = "HostName=MortalinDemoEnva8428dc9c325459eb1f37a3bf9bd710b.azure-devices.net;DeviceId=TrapSensor;SharedAccessKey=<REPLACE>";
 const char* wifi_ssid = "ComHem<34C3AB>";
-const char* wifi_pwd = "<INSERTPASS>"; 
+const char* wifi_pwd = "<REPLACE>"; 
 const char* deviceLocation = "malmo";
 
 /* 
@@ -151,7 +152,7 @@ const char* deviceLocation = "malmo";
  openssl x509 -noout -in cert.pem -fingerprint
  echo -n | opensslmd s_client -connect DGFSIoTaf4264253bb94e01a92d27d9125a3559.azure-devices.net:443 > dg.pem
 */
-const char* certificateFingerprint = "9C:AC:A9:4C:32:F9:53:0A:85:CA:AA:4D:CE:A2:D9:A2:83:9A:B8:AB";
+const char* certificateFingerprint = "95:B4:61:DF:90:D9:D7:1D:15:22:D8:DB:2E:F1:7D:BC:F4:BB:41:D2";
 
 Device device(wifi_ssid, wifi_pwd);
 IoT hub;
@@ -174,7 +175,7 @@ DigitalPin powerPin(D5);
 
 //DhtSensor sensor(device, dht11);
 //DhtSensor sensor(device, dht22);
-Dht12Sensor sensor(device);
+SR04Sensor sensor(device);
 Ldr ldr;
 
 //OLED display(&sensor);
@@ -215,7 +216,9 @@ void loop() {
   device.connectWifi();
   
 //  led.on();
-  Serial.println(hub.send(sensor.toJSON())); // response 204 means successful send of data to Azure IoT Hub
+  //if (sensor.temperature > 0) {//Only send when sensor is above 0 (we got a reading)
+    Serial.println(hub.send(sensor.toJSON())); // response 204 means successful send of data to Azure IoT Hub
+  //}
 //  led.off();
 
   if (device.deepSleepSeconds > 0) {
