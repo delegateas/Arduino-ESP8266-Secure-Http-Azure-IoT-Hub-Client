@@ -135,13 +135,13 @@
 //#include "DhtSensor.h"
 //#include "DigitalPin.h"
 //#include "Dht12Sensor.h"
-#include "SR04Sensor.h"
+#include "TriggerSensor.h"
 #include "Ldr.h"
 //#include "OLED.h"
 
-const char* connectionString = "HostName=MortalinDemoEnva8428dc9c325459eb1f37a3bf9bd710b.azure-devices.net;DeviceId=TrapSensor;SharedAccessKey=<REPLACE>";
-const char* wifi_ssid = "ComHem<34C3AB>";
-const char* wifi_pwd = "<REPLACE>"; 
+const char* connectionString = "HostName=MortalinDemoEnva8428dc9c325459eb1f37a3bf9bd710b.azure-devices.net;DeviceId=TrapSensor;SharedAccessKey=<INSERT>";
+const char* wifi_ssid = "Delegate_4G";
+const char* wifi_pwd = "<INSERT>"; 
 const char* deviceLocation = "malmo";
 
 /* 
@@ -175,7 +175,7 @@ DigitalPin powerPin(D5);
 
 //DhtSensor sensor(device, dht11);
 //DhtSensor sensor(device, dht22);
-SR04Sensor sensor(device);
+TriggerSensor sensor(device);
 Ldr ldr;
 
 //OLED display(&sensor);
@@ -204,7 +204,7 @@ void setup() {
   getCurrentTime();
 
 }
-
+bool trigger = false;
 void loop() {
   sensor.measure();
 //  powerPin.on();
@@ -215,11 +215,20 @@ void loop() {
 
   device.connectWifi();
   
-//  led.on();
-  //if (sensor.temperature > 0) {//Only send when sensor is above 0 (we got a reading)
+// 
+  if (trigger == false)
+  {
     Serial.println(hub.send(sensor.toJSON())); // response 204 means successful send of data to Azure IoT Hub
-  //}
-//  led.off();
+  }
+  if (sensor.temperature > 10) {//Only send when sensor is above 0 (we got a reading)
+     led.on();
+    trigger = true; 
+  }else {
+    trigger = false;
+    led.off();
+  }
+  
+//  
 
   if (device.deepSleepSeconds > 0) {
     WiFi.mode(WIFI_OFF);

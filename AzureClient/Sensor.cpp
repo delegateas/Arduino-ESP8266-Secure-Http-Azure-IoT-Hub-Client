@@ -17,7 +17,7 @@ char* Sensor::toJSON() {
  
 
   root["Utc"] = getISODateTime();
-  root["Celsius"] = temperature;
+  root["Temperature"] = temperature;
   root["Humidity"] = humidity;
   root["hPa"] = pressure;
   root["Light"] = light;

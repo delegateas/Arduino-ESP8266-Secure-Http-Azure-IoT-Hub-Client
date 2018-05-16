@@ -21,16 +21,16 @@ void SR04Sensor::measure(){
     digitalWrite(trigPin, LOW);
     long duration = pulseIn(echoPin, HIGH);
     //Calculate the distance (in cm) based on the speed of sound.
-    long distance = duration/58.2;
+    long distance = duration/58.2f;
     Serial.println(distance);
     temperature = 0;
     humidity = 0;
-    if (distance<150)
-    {
+    //if (distance<150)
+    //{
     
       temperature = distance; 
     
-    }
+    //}
     delay(25);
   } while ((isnan(temperature) || isnan(humidity)) && ++retryCount < 20);
 }
